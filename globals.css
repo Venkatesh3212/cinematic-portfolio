@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #030303;
+  --surface: #090909;
+  --accent-red: #c40024;
+  --bright-red: #e0002a;
+  --text: #f5f5f5;
+  --xp: 50%;
+  --yp: 50%;
+}
+
+/* Crucial for Lenis smooth scroll: NEVER set overflow: hidden on html or body */
+html,
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  width: 100%;
+  font-family: var(--font-space), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scroll progress indicator bar at top of viewport */
+#scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, #ff3b5c, #c40024, #e0002a);
+  box-shadow: 0 0 12px 1px #e0002a, 0 0 24px 2px rgba(196, 0, 36, 0.6);
+  z-index: 9999;
+  pointer-events: none;
+  transition: width 0.05s linear;
+}
+
+/* Layered Cinematic Overlays */
+.cine-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 35%, rgba(3, 3, 3, 0.88) 85%, rgba(3, 3, 3, 0.98) 100%);
+  z-index: 10;
+}
+
+#cine-glow,
+.cine-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle 600px at var(--xp, 50%) var(--yp, 50%), rgba(196, 0, 36, 0.22), rgba(196, 0, 36, 0.05) 50%, transparent 80%);
+  mix-blend-mode: screen;
+  z-index: 11;
+  transition: opacity 0.3s ease;
+}
+
+.cine-scan {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.2) 0px,
+    rgba(0, 0, 0, 0.2) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.7;
+  z-index: 12;
+}
+
+.cine-grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.65;
+  z-index: 13;
+  animation: grainJitter 0.5s steps(3) infinite;
+}
+
+@keyframes grainJitter {
+  0% { transform: translate(0, 0); }
+  33% { transform: translate(-3%, -2%); }
+  66% { transform: translate(2%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Touch action rule on 3D draggable elements: prevents blocking vertical page scroll */
+.touch-pan-y {
+  touch-action: pan-y !important;
+}
+
+/* Obsidian Glass styling */
+.glass-panel {
+  background: rgba(12, 12, 12, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-glow {
+  background: rgba(14, 14, 14, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(196, 0, 36, 0.3);
+  box-shadow: 0 0 30px -10px rgba(196, 0, 36, 0.3);
+}
+
+/* Custom laser bar accents */
+.laser-top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--bright-red), transparent);
+  box-shadow: 0 0 10px var(--bright-red);
+}
+
+/* Custom Cursor styling: smooth trailing aura without blocking OS pointer */
+.custom-cursor-ring {
+  pointer-events: none;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+/* Selection highlight */
+::selection {
+  background-color: var(--accent-red);
+  color: #ffffff;
+}
